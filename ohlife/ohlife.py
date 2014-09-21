@@ -1,15 +1,18 @@
 import sqlite3
 import smtplib
+import arrow
 from email.mime.text import MIMEText
 from email.header import Header
 from email_credentials import email_credentials
 
 
 def send_mail(data):
-    mailhost, fromaddr, toaddrs, subject, credentials = email_credentials()
+    today = arrow.now().format('dddd, MMM D')
+    subject = "It's %s - How did your day go?" % today
+    body = "Just reply to this email with your entry.\n\n" \
+           "Remember this? One year ago you wrote...\n" + data
+    mailhost, fromaddr, toaddrs, credentials = email_credentials()
     username, password = credentials
-    subject = 'you are so unbelievably sexy'
-    body = 'you sex machine\n\n' + data
     msg = MIMEText(body, _charset="UTF-8")
     msg['Subject'] = Header(subject, "utf-8")
     server = smtplib.SMTP(mailhost)
@@ -19,9 +22,18 @@ def send_mail(data):
     server.quit()
 
 
-def main():
+def get_last_year_entry():
+    last_year = arrow.now().replace(years=-1).format('YYYY-MM-DD')
     with sqlite3.connect('db.db') as db:
-        print(db.execute('select * from entries').fetchone())
+        query = 'select entry from entries where day = ?'
+        return db.execute(query, (last_year,)).fetchone()[0]
+
+
+def main():
+    data = get_last_year_entry()
+    send_mail(data)
+
 
 if __name__ == '__main__':
     main()
+
