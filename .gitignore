@@ -1,3 +1,9 @@
+ohlife/email_credentials.py
+ohlife/db.db
+ohlife/scratch.ipynb
+ohlife/.idea
+.ipynb_checkpoints
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
