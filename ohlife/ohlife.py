@@ -26,7 +26,8 @@ def get_last_year_entry():
     last_year = arrow.now().replace(years=-1).format('YYYY-MM-DD')
     with sqlite3.connect('db.db') as db:
         query = 'select entry from entries where day = ?'
-        return db.execute(query, (last_year,)).fetchone()[0]
+        result = db.execute(query, (last_year,)).fetchone()
+        return result[0] if result is not None else ''
 
 
 def main():
