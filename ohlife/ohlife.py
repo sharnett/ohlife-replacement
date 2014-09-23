@@ -9,7 +9,7 @@ from email_credentials import email_credentials
 def send_mail(data):
     today = arrow.now().format('dddd, MMM D (YYYY-MM-DD)')
     subject = "It's %s - How did your day go?" % today
-    body = "Just reply to this email with your entry.\n\n" \
+    body = "Forward this email to the secret address with your entry.\n\n" \
            "Remember this? One year ago you wrote...\n" + data
     mailhost, fromaddr, toaddrs, credentials = email_credentials()
     username, password = credentials
