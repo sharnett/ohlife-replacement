@@ -4,6 +4,19 @@ ohlife-replacement
 ohlife was an email-based diary thing that shutdown in October 2014. This aims
 to do basically the same thing.
 
+You need an email address for this. I'm using gmail.
+
+Create a file called email_credentials.py that looks like this:
+
+```python
+def email_credentials():
+    mailhost = "smtp.gmail.com"
+    fromaddr = "XXX@gmail.com"
+    toaddrs = ["YYY"]
+    credentials = ("XXX", "ZZZ")
+    return mailhost, fromaddr, toaddrs, credentials
+```
+
 Make a sqlite3 database called db.db with one table:
 
 ```sql
@@ -22,4 +35,4 @@ Set up a daily cron job to run ohlife.py.
 When ohlife.py sends you an email, forward your response to the cloudmailin
 email address.
 
-Done.
+Enjoy.
