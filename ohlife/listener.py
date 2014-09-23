@@ -13,7 +13,7 @@ def home():
 @app.route('/listen', methods=['POST'])
 def listen():
     subject = request.form.get('headers[Subject]')
-    entry = request.form.get('plain')
+    body = request.form.get('plain')
 
     def extract_day(s):
         pattern = r'(\d\d\d\d-\d\d-\d\d)'
@@ -21,6 +21,15 @@ def listen():
         if m is not None:
             return m.group(1)
     day = extract_day(subject)
+
+    def extract_entry(body):
+        entry_lines = []
+        for line in body.split('\n'):
+            if 'Forwarded message' in line:
+                break
+            entry_lines.append(line)
+        return ''.join(entry_lines)
+    entry = extract_entry(body)
 
     print(day)
     print(entry)
