@@ -49,7 +49,6 @@ def write_to_db(day, entry):
             print('successfully wrote to db')
         except:
             print('ERROR: failed to write to db')
-            raise
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=8000)
