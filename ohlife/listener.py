@@ -4,16 +4,14 @@ from flask import request, Flask, render_template_string
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def home():
     return render_template_string('home')
 
-
 @app.route('/listen', methods=['POST'])
 def listen():
     subject = request.form.get('headers[Subject]')
-    body = request.form.get('plain')
+    entry = request.form.get('reply_plain')
 
     def extract_day(s):
         pattern = r'(\d\d\d\d-\d\d-\d\d)'
@@ -21,15 +19,6 @@ def listen():
         if m is not None:
             return m.group(1)
     day = extract_day(subject)
-
-    def extract_entry(body):
-        entry_lines = []
-        for line in body.split('\n'):
-            if 'Forwarded message' in line:
-                break
-            entry_lines.append(line)
-        return ''.join(entry_lines)
-    entry = extract_entry(body)
 
     print(day)
     print(entry)
@@ -42,7 +31,7 @@ def listen():
 def write_to_db(day, entry):
     if day is not None and entry is not None:
         try:
-            with sqlite3.connect('db.db') as db:
+            with sqlite3.connect('ohlife.db') as db:
                 query = 'insert into entries (day, entry) values (?, ?)'
                 db.execute(query, (day, entry))
                 db.commit()

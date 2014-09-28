@@ -12,15 +12,16 @@ Create a file called email_credentials.py that looks like this:
 def email_credentials():
     mailhost = "smtp.gmail.com"
     fromaddr = "XXX@gmail.com"
+    replytoaddr = "OhLife <XXX@cloudmailin.net>"
     toaddrs = ["YYY"]
     credentials = ("XXX", "ZZZ")
-    return mailhost, fromaddr, toaddrs, credentials
+    return mailhost, fromaddr, replytoaddr, toaddrs, credentials
 ```
 
-Make a sqlite3 database called db.db with one table:
+Run the import.py script with your ohlife.txt export file:
 
-```sql
-create table entries (day date primary key, entry text);
+```
+python import.py ohlife_export.txt
 ```
 
 Set up a web server to run listen.py. I'm just using the flask development
@@ -32,7 +33,6 @@ webserver in the previous step.
 
 Set up a daily cron job to run ohlife.py.
 
-When ohlife.py sends you an email, forward your response to the cloudmailin
-email address.
+When ohlife.py sends you an email, reply to the cloudmailin email address.
 
 Enjoy.
