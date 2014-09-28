@@ -1,5 +1,6 @@
 ohlife/email_credentials.py
 ohlife/db.db
+ohlife/ohlife.db
 ohlife/scratch.ipynb
 ohlife/.idea
 .ipynb_checkpoints
