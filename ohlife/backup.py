@@ -2,8 +2,6 @@ import smtplib
 import sqlite3
 import arrow
 import gzip
-from io import StringIO
-from pandas.io.sql import read_sql
 from email_credentials import email_credentials
 from email.mime.text import MIMEText
 from email.header import Header
@@ -34,14 +32,13 @@ def send_mail(subject, body, attachment=None):
 
 def get_attachment():
     with sqlite3.connect('ohlife.db') as db:
-        df = read_sql('select * from entries', db)
-    with StringIO() as tmp_file:
-        df.to_csv(tmp_file, index=False)
-        tmp_file.seek(0)
-        csv = tmp_file.read().encode('utf-8')
-    compressed_csv = gzip.compress(csv)
-    filename = 'ohlife_%s.csv.gz' % arrow.now().format('YYYYMMDD')
-    return compressed_csv, filename
+        cur = db.execute('select day, entry from entries order by day')
+        result = cur.fetchall()
+    psv = 'day|entry\n'
+    psv += '\n'.join('%s|"%s"' % (day, entry) for day, entry in result)
+    compressed_psv = gzip.compress(psv.encode('utf-8'))
+    filename = 'ohlife_%s.psv.gz' % arrow.now().format('YYYYMMDD')
+    return compressed_psv, filename
 
 
 def main():
