@@ -1,0 +1,17 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+# [START mail_service]
+inbound_services:
+- mail
+# [END mail_service]
+
+handlers:
+# [START handle_incoming_email]
+- url: /_ah/mail/WHATEVER@.*YOUR_APP_ID\.appspotmail\.com
+  script: handle_incoming_email.app
+  login: admin
+# [END handle_incoming_email]
+- url: /.*
+  script: main.app
