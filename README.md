@@ -49,15 +49,15 @@ When ohlife.py sends you an email, reply to the cloudmailin email address.
 You'll probably want to install the GCP developer tools and Sendgrid python stuff to test locally.
 
 1. Create a new Datastore (optionally with some seed data) with kind = 'DailyEntry' and two columns:
-  1. 'Date' of type Date and time
-  1. 'Entry' of type String
+    1. 'Date' of type Date and time
+    1. 'Entry' of type String
 1. Set up a free Sendgrid account and note your API key.
 1. Deploy the email handler script.
-  1. Edit the 'url' line in app.yaml by filling in the relevant placeholders.
-  1. `gcloud app deploy`
+    1. Edit the 'url' line in app.yaml by filling in the relevant placeholders.
+    1. `gcloud app deploy`
 1. Set up a Pub/Sub topic called my-topic.
 1. Deploy the daily emailer script:
-  1. Edit the `FROM_EMAIL` and `TO_EMAIL` lines in main.py. `FROM_EMAIL` should be the same email from the 'url' line in the email handler script, `TO_EMAIL` should be your personal email.
-  1. Run `gcloud functions deploy ohlife_pubsub --runtime python37 --set-env-vars SENDGRID_API_KEY={YOUR_API_KEY} --trigger-topic my-topic`
+    1. Edit the `FROM_EMAIL` and `TO_EMAIL` lines in main.py. `FROM_EMAIL` should be the same email from the 'url' line in the email handler script, `TO_EMAIL` should be your personal email.
+    1. Run `gcloud functions deploy ohlife_pubsub --runtime python37 --set-env-vars SENDGRID_API_KEY={YOUR_API_KEY} --trigger-topic my-topic`
 1. Set up a Cloud Scheduler to trigger my-topic once every day.
 
